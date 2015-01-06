@@ -5,7 +5,7 @@ private
     import core.stdc.wchar_;
     import my.winhook;
 
-    Array!byte g_storedKeys;
+    Array!Key g_storedKeys;
     bool g_translated;
     bool g_copy;
     bool g_clear;
@@ -165,12 +165,14 @@ public
             g_clear = false;
         }
 
-        if (GetAsyncKeyState(VK_CONTROL) & 0x8000 || GetAsyncKeyState(VK_MENU) & 0x8000)
+        if (GetKeyState(VK_CONTROL) & 0x8000 || GetKeyState(VK_MENU) & 0x8000)
         {
             return;
         }
 
-        g_storedKeys.insertBack(cast(byte)msg.wParam);
+        Key key = { cast(byte)msg.wParam, cast(bool)(GetKeyState(VK_SHIFT) & 0x8000) };
+
+        g_storedKeys.insertBack(key);
     }
 
     void clearStoredKeys()
@@ -189,7 +191,7 @@ public
             INPUT[] keys;
             keys.reserve(g_storedKeys.length * 2);
 
-            foreach (byte vk; g_storedKeys)
+            foreach (Key key; g_storedKeys)
             {
                 keys[keys.length++] = kBackKeyDown;
                 keys[keys.length++] = kBackKeyUp;
@@ -200,12 +202,22 @@ public
 
         {
             INPUT[] keys;
-            keys.reserve(g_storedKeys.length * 2);
+            keys.reserve(g_storedKeys.length * 4);
 
-            foreach (byte vk; g_storedKeys)
+            foreach (Key key; g_storedKeys)
             {
-                keys[keys.length++] = makeINPUT(vk);
-                keys[keys.length++] = makeINPUT(vk, true);
+                if (key.shift)
+                {
+                    keys[keys.length++] = kShiftKeyDown;
+                }
+
+                keys[keys.length++] = makeINPUT(key.vk);
+                keys[keys.length++] = makeINPUT(key.vk, true);
+
+                if (key.shift)
+                {
+                    keys[keys.length++] = kShiftKeyUp;
+                }
             }
 
             ActivateKeyboardLayout(cast(HKL)HKL_NEXT, KLF_SETFORPROCESS);
