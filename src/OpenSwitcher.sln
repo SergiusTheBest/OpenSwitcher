@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherApp", "OpenSwitcherApp\OpenSwitcherApp.visualdproj", "{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2} = {45B26AB5-7BFD-4DB3-BC95-595A18347CC2}
+	EndProjectSection
+EndProject
+Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherHook", "OpenSwitcherHook\OpenSwitcherHook.visualdproj", "{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "My", "My", "{4436197D-89E8-4903-A420-736E74620356}"
+	ProjectSection(SolutionItems) = preProject
+		My\winhook.d = My\winhook.d
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Debug|Win32.Build.0 = Debug|Win32
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Debug|x64.ActiveCfg = Debug|x64
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Debug|x64.Build.0 = Debug|x64
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Release|Win32.ActiveCfg = Release|Win32
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Release|Win32.Build.0 = Release|Win32
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Release|x64.ActiveCfg = Release|x64
+		{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}.Release|x64.Build.0 = Release|x64
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Debug|Win32.Build.0 = Debug|Win32
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Debug|x64.ActiveCfg = Debug|Win32
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Release|Win32.ActiveCfg = Release|Win32
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Release|Win32.Build.0 = Release|Win32
+		{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
