@@ -5,10 +5,16 @@ private
     import core.stdc.wchar_;
     import my.winhook;
 
+    enum State
+    {
+        Initial,
+        TranslationInProgress,
+        Translated,
+        CopyInProgress,
+    }
+
     Array!Key g_storedKeys;
-    bool g_translated;
-    bool g_copy;
-    bool g_clear;
+    State g_state;
 
     immutable INPUT kBackKeyDown;
     immutable INPUT kBackKeyUp;
@@ -94,11 +100,6 @@ private
 
         ActivateKeyboardLayout(cast(HKL)HKL_NEXT, KLF_SETFORPROCESS);
 
-        wchar[KL_NAMELENGTH] keyboardName;
-        GetKeyboardLayoutNameW(keyboardName.ptr);
-
-        //MessageBoxW(null, keyboardName.ptr, "keyboard", 0);
-
         wchar[] newStr;
         newStr.reserve(len + 1);
 
@@ -159,10 +160,10 @@ public
 {
     void addToStoredKeys(LPMSG msg)
     {
-        if (g_clear)
+        if (State.Translated == g_state)
         {
+            g_state = State.Initial;
             g_storedKeys.clear();
-            g_clear = false;
         }
 
         if (GetKeyState(VK_CONTROL) & 0x8000 || GetKeyState(VK_MENU) & 0x8000)
@@ -226,30 +227,33 @@ public
 
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
         g_storedKeys.clear();
-        g_translated = true;
+        g_state = State.TranslationInProgress;
     }
 
     void translateSelectedKeys()
     {
         SendInput(kCopyKeys.length, kCopyKeys.ptr, INPUT.sizeof);
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
-        g_copy = true;
+        g_state = State.CopyInProgress;
     }
 
     void checkForMarkerKey(LPMSG msg)
     {
         if (-1 == msg.time)
         {
-            if (g_translated)
+            switch (g_state)
             {
-                g_translated = false;
-                g_clear = true;
-            }
+            case State.TranslationInProgress:
+                g_state = State.Translated;
+                break;
 
-            if (g_copy)
-            {
+            case State.CopyInProgress:
+                g_state = State.Initial;
                 translateSelectedKeys2();
-                g_copy = false;
+                break;
+
+            default:
+                break;
             }
         }
     }
