@@ -10,9 +10,9 @@ Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherApp", "OpenSwit
 EndProject
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherHook", "OpenSwitcherHook\OpenSwitcherHook.visualdproj", "{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "My", "My", "{4436197D-89E8-4903-A420-736E74620356}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Import", "Import", "{4436197D-89E8-4903-A420-736E74620356}"
 	ProjectSection(SolutionItems) = preProject
-		My\winhook.d = My\winhook.d
+		Import\WinApi.di = Import\WinApi.di
 	EndProjectSection
 EndProject
 Global

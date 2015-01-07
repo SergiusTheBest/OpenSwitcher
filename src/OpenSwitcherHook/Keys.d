@@ -3,7 +3,7 @@ private
     import std.c.windows.windows;
     import std.container;
     import core.stdc.wchar_;
-    import my.winhook;
+    import WinApi;
 
     enum State
     {
@@ -98,7 +98,7 @@ private
             keys[keys.length++] = vk;
         }    
 
-        ActivateKeyboardLayout(cast(HKL)HKL_NEXT, KLF_SETFORPROCESS);
+        ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
 
         wchar[] newStr;
         newStr.reserve(len + 1);
@@ -221,7 +221,7 @@ public
                 }
             }
 
-            ActivateKeyboardLayout(cast(HKL)HKL_NEXT, KLF_SETFORPROCESS);
+            ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
             SendInput(keys.length, keys.ptr, INPUT.sizeof);            
         }
 

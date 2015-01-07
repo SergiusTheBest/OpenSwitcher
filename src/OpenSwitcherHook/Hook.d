@@ -1,6 +1,6 @@
 import std.c.windows.windows;
-import my.winhook;
 import std.utf;
+import WinApi;
 import Keys;
 
 extern (Windows)

@@ -3,7 +3,7 @@ private
     import std.c.windows.windows;
     import TrayIcon;
     import Resource;
-    import my.winhook;    
+    import WinApi;
 
     immutable uint kTrayMessage = WM_USER + 10;
     immutable uint kTrayId = 1;

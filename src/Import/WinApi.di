@@ -1,5 +1,3 @@
-module my.winhook;
-
 import std.c.windows.windows;
 
 extern(Windows) nothrow
@@ -119,10 +117,7 @@ enum
     CF_UNICODETEXT = 13
 }
 
-enum
-{
-    HKL_NEXT = 1
-}
+immutable HKL HKL_NEXT = cast(HKL)1;
 
 enum
 {

@@ -1,6 +1,6 @@
 import std.stdio;
 import std.c.windows.windows;
-import my.winhook;
+import WinApi;
 import AppWnd;
 
 int main(string[] argv)

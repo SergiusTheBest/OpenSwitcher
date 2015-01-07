@@ -1,6 +1,6 @@
 private import std.c.windows.windows;
 private import std.algorithm : min;
-private import my.winhook;
+private import WinApi;
 
 class TrayIcon
 {
