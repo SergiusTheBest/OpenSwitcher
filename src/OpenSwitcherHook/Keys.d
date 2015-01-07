@@ -144,7 +144,7 @@ private
         SendInput(kPasteKeys.length, kPasteKeys.ptr, INPUT.sizeof);
     }
 
-    INPUT makeINPUT(byte vk, bool up = false, bool marker = false)
+    nothrow INPUT makeINPUT(byte vk, bool up = false, bool marker = false)
     {
         INPUT input;
         input.type = INPUT_KEYBOARD;
@@ -153,6 +153,11 @@ private
         input.ki.dwFlags = up ? KEYEVENTF_KEYUP : 0;
 
         return input;
+    }
+
+    nothrow bool isKeyPressed(int vk)
+    {
+        return cast(bool)(GetKeyState(vk) & 0x8000);
     }
 }
 
@@ -166,12 +171,12 @@ public
             g_storedKeys.clear();
         }
 
-        if (GetKeyState(VK_CONTROL) & 0x8000 || GetKeyState(VK_MENU) & 0x8000)
+        if (isKeyPressed(VK_CONTROL) || isKeyPressed(VK_MENU))
         {
             return;
         }
 
-        Key key = { cast(byte)msg.wParam, cast(bool)(GetKeyState(VK_SHIFT) & 0x8000) };
+        Key key = { cast(byte)msg.wParam, isKeyPressed(VK_SHIFT) };
 
         g_storedKeys.insertBack(key);
     }
