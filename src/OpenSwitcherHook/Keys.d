@@ -155,6 +155,11 @@ private
         return input;
     }
 
+    nothrow bool isMarkerKey(LPMSG msg)
+    {
+        return -1 == msg.time;
+    }
+
     nothrow bool isKeyPressed(int vk)
     {
         return cast(bool)(GetKeyState(vk) & 0x8000);
@@ -227,11 +232,12 @@ public
             }
 
             ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
-            SendInput(keys.length, keys.ptr, INPUT.sizeof);            
+            SendInput(keys.length, keys.ptr, INPUT.sizeof);
+
+            g_storedKeys.clear();
         }
 
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
-        g_storedKeys.clear();
         g_state = State.TranslationInProgress;
     }
 
@@ -244,22 +250,24 @@ public
 
     void checkForMarkerKey(LPMSG msg)
     {
-        if (-1 == msg.time)
+        if (!isMarkerKey(msg))
         {
-            switch (g_state)
-            {
-            case State.TranslationInProgress:
-                g_state = State.Translated;
-                break;
+            return;
+        }
 
-            case State.CopyInProgress:
-                g_state = State.Initial;
-                translateSelectedKeys2();
-                break;
+        switch (g_state)
+        {
+        case State.TranslationInProgress:
+            g_state = State.Translated;
+            break;
 
-            default:
-                break;
-            }
+        case State.CopyInProgress:
+            g_state = State.Initial;
+            translateSelectedKeys2();
+            break;
+
+        default:
+            break;
         }
     }
 }
