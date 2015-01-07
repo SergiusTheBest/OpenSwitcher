@@ -156,7 +156,7 @@
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath>$(SolutionDir)\Import</imppath>
   <fileImppath />
-  <outdir>$(ConfigurationName)</outdir>
+  <outdir>$(SolutionDir)\..\bin\$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
   <objname />
   <libname />
@@ -257,7 +257,7 @@
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath>$(SolutionDir)\Import</imppath>
   <fileImppath />
-  <outdir>$(ConfigurationName)</outdir>
+  <outdir>$(SolutionDir)\..\bin\$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
   <objname />
   <libname />
@@ -358,7 +358,7 @@
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
   <imppath>$(SolutionDir)\Import</imppath>
   <fileImppath />
-  <outdir>$(ConfigurationName)</outdir>
+  <outdir>$(SolutionDir)\..\bin\$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
   <objname />
   <libname />
