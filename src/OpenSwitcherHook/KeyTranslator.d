@@ -14,9 +14,11 @@ private
         TranslationInProgress,
         Translated,
         CopyInProgress,
+        PasteInProgress,
     }
 
     Array!Key g_typedKeys;
+    Array!Key g_selectedKeys;
     State g_state;
 
     void translateSelectedKeys2()
@@ -55,12 +57,12 @@ private
 
         auto len = wcslen(str);
 
-        Key[] keys;
-        keys.reserve(len);
+        g_selectedKeys.clear();
+        g_selectedKeys.reserve(len);
 
         foreach (int i; 0..len)
         {
-            keys[keys.length++] = Key.Key(str[i]);
+            g_selectedKeys.insertBack(Key.Key(str[i]));
         }    
 
         ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
@@ -68,7 +70,7 @@ private
         wchar[] newStr;
         newStr.reserve(len + 1);
 
-        foreach (Key key; keys)
+        foreach (Key key; g_selectedKeys)
         {
             newStr[newStr.length++] = key.toUnicode();
         }
@@ -102,6 +104,8 @@ private
         }
 
         SendInput(kPasteKeys.length, kPasteKeys.ptr, INPUT.sizeof);
+        SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
+        g_state = State.PasteInProgress;
     }
 }
 
@@ -190,6 +194,11 @@ public
         case State.CopyInProgress:
             g_state = State.Initial;
             translateSelectedKeys2();
+            break;
+
+        case State.PasteInProgress:
+            g_state = State.Translated;
+            g_typedKeys = g_selectedKeys;
             break;
 
         default:
