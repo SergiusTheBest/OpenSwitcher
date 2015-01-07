@@ -4,6 +4,9 @@ private
     import std.container;
     import core.stdc.wchar_;
     import WinApi;
+    import Key;
+    import Input;
+    import Util;
 
     enum State
     {
@@ -15,42 +18,6 @@ private
 
     Array!Key g_storedKeys;
     State g_state;
-
-    immutable INPUT kBackKeyDown;
-    immutable INPUT kBackKeyUp;
-    immutable INPUT kShiftKeyDown;
-    immutable INPUT kShiftKeyUp;
-    immutable INPUT[4] kCopyKeys;
-    immutable INPUT[4] kPasteKeys;
-    immutable INPUT[2] kMarkerKeys;
-
-    struct Key
-    {
-        byte vk;
-        bool shift;
-    }
-
-    shared static this()
-    {
-        kBackKeyDown = makeINPUT(VK_BACK);
-        kBackKeyUp = makeINPUT(VK_BACK, true);
-
-        kShiftKeyDown = makeINPUT(VK_SHIFT);
-        kShiftKeyUp = makeINPUT(VK_SHIFT, true);
-
-        kCopyKeys[0] = makeINPUT(VK_CONTROL);
-        kCopyKeys[1] = makeINPUT(0x43);
-        kCopyKeys[2] = makeINPUT(0x43, true);
-        kCopyKeys[3] = makeINPUT(VK_CONTROL, true);
-
-        kPasteKeys[0] = makeINPUT(VK_CONTROL);
-        kPasteKeys[1] = makeINPUT(0x56);
-        kPasteKeys[2] = makeINPUT(0x56, true);
-        kPasteKeys[3] = makeINPUT(VK_CONTROL, true);
-
-        kMarkerKeys[0] = makeINPUT(VK_CONTROL, false, true);
-        kMarkerKeys[1] = makeINPUT(VK_CONTROL, true, true);
-    }
 
     void translateSelectedKeys2()
     {
@@ -88,14 +55,12 @@ private
 
         auto len = wcslen(str);
 
-        byte[] keys;
+        Key[] keys;
         keys.reserve(len);
 
         foreach (int i; 0..len)
         {
-            auto vk = cast(byte)VkKeyScanW(str[i]);
-
-            keys[keys.length++] = vk;
+            keys[keys.length++] = Key.Key(str[i]);
         }    
 
         ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
@@ -103,14 +68,9 @@ private
         wchar[] newStr;
         newStr.reserve(len + 1);
 
-        immutable ubyte[256] state = 0;
-
-        foreach (int i; 0..len)
+        foreach (Key key; keys)
         {
-            wchar wch;
-            ToUnicode(keys[i], 0, state.ptr, &wch, 1, 0);
-
-            newStr[newStr.length++] = wch;
+            newStr[newStr.length++] = key.toUnicode();
         }
 
         newStr[newStr.length++] = 0;
@@ -143,27 +103,6 @@ private
 
         SendInput(kPasteKeys.length, kPasteKeys.ptr, INPUT.sizeof);
     }
-
-    nothrow INPUT makeINPUT(byte vk, bool up = false, bool marker = false)
-    {
-        INPUT input;
-        input.type = INPUT_KEYBOARD;
-        input.ki.wVk = vk;
-        input.ki.time = marker ? -1 : 0;
-        input.ki.dwFlags = up ? KEYEVENTF_KEYUP : 0;
-
-        return input;
-    }
-
-    nothrow bool isMarkerKey(LPMSG msg)
-    {
-        return -1 == msg.time;
-    }
-
-    nothrow bool isKeyPressed(int vk)
-    {
-        return cast(bool)(GetKeyState(vk) & 0x8000);
-    }
 }
 
 public
@@ -181,9 +120,7 @@ public
             return;
         }
 
-        Key key = { cast(byte)msg.wParam, isKeyPressed(VK_SHIFT) };
-
-        g_storedKeys.insertBack(key);
+        g_storedKeys.insertBack(Key.Key(msg));
     }
 
     void clearStoredKeys()
@@ -199,40 +136,29 @@ public
         }
 
         {
-            INPUT[] keys;
-            keys.reserve(g_storedKeys.length * 2);
+            INPUT[] input;
+            input.reserve(g_storedKeys.length * 2);
 
             foreach (Key key; g_storedKeys)
             {
-                keys[keys.length++] = kBackKeyDown;
-                keys[keys.length++] = kBackKeyUp;
+                input[input.length++] = kBackKeyDown;
+                input[input.length++] = kBackKeyUp;
             }
 
-            SendInput(keys.length, keys.ptr, INPUT.sizeof);
+            SendInput(input.length, input.ptr, INPUT.sizeof);
         }
 
         {
-            INPUT[] keys;
-            keys.reserve(g_storedKeys.length * 4);
+            INPUT[] input;
+            input.reserve(g_storedKeys.length * 4);
 
             foreach (Key key; g_storedKeys)
             {
-                if (key.shift)
-                {
-                    keys[keys.length++] = kShiftKeyDown;
-                }
-
-                keys[keys.length++] = makeINPUT(key.vk);
-                keys[keys.length++] = makeINPUT(key.vk, true);
-
-                if (key.shift)
-                {
-                    keys[keys.length++] = kShiftKeyUp;
-                }
+                input ~= key.toInput();
             }
 
             ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
-            SendInput(keys.length, keys.ptr, INPUT.sizeof);
+            SendInput(input.length, input.ptr, INPUT.sizeof);
 
             g_storedKeys.clear();
         }

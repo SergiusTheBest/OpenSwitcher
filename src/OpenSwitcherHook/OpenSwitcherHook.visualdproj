@@ -206,6 +206,9 @@
   <File path="Dll.def" />
   <File path="DllMain.d" />
   <File path="Hook.d" />
-  <File path="Keys.d" />
+  <File path="Input.d" />
+  <File path="Key.d" />
+  <File path="KeyTranslator.d" />
+  <File path="Util.d" />
  </Folder>
 </DProject>
