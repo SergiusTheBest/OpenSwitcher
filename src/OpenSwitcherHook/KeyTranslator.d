@@ -1,13 +1,15 @@
+module KeyTranslator;
+
+import std.c.windows.windows;
+import core.stdc.wchar_;
+import WinApi;
+import Key;
+import Input;
+import Util;
+import KeyboardState;
+
 private
 {
-    import std.c.windows.windows;
-    import std.container;
-    import core.stdc.wchar_;
-    import WinApi;
-    import Key;
-    import Input;
-    import Util;
-
     enum State
     {
         Initial,
@@ -17,12 +19,18 @@ private
         PasteInProgress,
     }
 
-    Array!Key g_typedKeys;
-    Array!Key g_selectedKeys;
+    Key[] g_typedKeys;
+    Key[] g_selectedKeys;
     State g_state;
 
     void translateSelectedKeys2()
     {
+        scope(exit)
+        {
+            SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
+            g_state = State.PasteInProgress;
+        }
+
         if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
         {
             return;
@@ -57,12 +65,14 @@ private
 
         auto len = wcslen(str);
 
-        g_selectedKeys.clear();
+        g_selectedKeys.length = 0;
         g_selectedKeys.reserve(len);
+
+        HKL[] layouts = getKeyboardLayouts();
 
         foreach (int i; 0..len)
         {
-            g_selectedKeys.insertBack(Key.Key(str[i]));
+            g_selectedKeys[g_selectedKeys.length++] = Key.Key(str[i], layouts);
         }    
 
         ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
@@ -104,8 +114,6 @@ private
         }
 
         SendInput(kPasteKeys.length, kPasteKeys.ptr, INPUT.sizeof);
-        SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
-        g_state = State.PasteInProgress;
     }
 }
 
@@ -116,7 +124,7 @@ public
         if (State.Translated == g_state)
         {
             g_state = State.Initial;
-            g_typedKeys.clear();
+            g_typedKeys.length = 0;
         }
 
         if (isKeyPressed(VK_CONTROL) || isKeyPressed(VK_MENU))
@@ -124,17 +132,17 @@ public
             return;
         }
 
-        g_typedKeys.insertBack(Key.Key(msg));
+        g_typedKeys[g_typedKeys.length++] = Key.Key(msg);
     }
 
     void clearTypedKeys()
     {
-        g_typedKeys.clear();
+        g_typedKeys.length = 0;
     }
 
     void translateTypedKeys()
     {
-        if (g_typedKeys.empty())
+        if (!g_typedKeys.length)
         {
             return;
         }
@@ -164,7 +172,7 @@ public
             ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
             SendInput(input.length, input.ptr, INPUT.sizeof);
 
-            g_typedKeys.clear();
+            g_typedKeys.length = 0;
         }
 
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
@@ -173,6 +181,8 @@ public
 
     void translateSelectedKeys()
     {
+        KeyboardState.clear();
+
         SendInput(kCopyKeys.length, kCopyKeys.ptr, INPUT.sizeof);
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
         g_state = State.CopyInProgress;
@@ -199,6 +209,18 @@ public
         case State.PasteInProgress:
             g_state = State.Translated;
             g_typedKeys = g_selectedKeys;
+
+            KeyboardState.restore();
+
+            if (IsClipboardFormatAvailable(CF_UNICODETEXT))
+            {
+                if (OpenClipboard(null))
+                {
+                    EmptyClipboard();
+                    CloseClipboard();
+                }
+            }
+
             break;
 
         default:

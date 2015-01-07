@@ -1,3 +1,5 @@
+module Input;
+
 import std.c.windows.windows;
 import WinApi;
 

@@ -208,6 +208,7 @@
   <File path="Hook.d" />
   <File path="Input.d" />
   <File path="Key.d" />
+  <File path="KeyboardState.d" />
   <File path="KeyTranslator.d" />
   <File path="Util.d" />
  </Folder>

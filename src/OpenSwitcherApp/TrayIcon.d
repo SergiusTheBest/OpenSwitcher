@@ -1,10 +1,12 @@
-private import std.c.windows.windows;
-private import std.algorithm : min;
-private import WinApi;
+module TrayIcon;
+
+import std.c.windows.windows;
+import std.algorithm : min;
+import WinApi;
 
 class TrayIcon
 {
-	this(HWND hwnd, UINT id, UINT callbackMessage, HICON icon) nothrow
+	nothrow this(HWND hwnd, UINT id, UINT callbackMessage, HICON icon)
 	{
 		m_nid.cbSize = NOTIFYICONDATAW.sizeof;
 		m_nid.hWnd = hwnd;
@@ -22,14 +24,14 @@ class TrayIcon
 		hide();
 	}
 
-	void show() nothrow
+	nothrow void show()
 	{
 		hide();
 		Shell_NotifyIconW(NIM_ADD, &m_nid);
         m_visible = true;
 	}
 
-	void hide() nothrow
+	nothrow void hide()
 	{
         if (m_visible)
         {
@@ -38,7 +40,7 @@ class TrayIcon
         }
 	}
 
-	void tip(const wchar[] newTip) @property
+	@property void tip(const wchar[] newTip)
 	{
 		auto tipLen = min(newTip.length, m_nid.szTip.length - 1);
 		m_nid.szTip[0 .. tipLen] = newTip[0 .. tipLen];

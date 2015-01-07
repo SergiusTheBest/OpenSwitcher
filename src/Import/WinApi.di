@@ -1,3 +1,5 @@
+module WinApi;
+
 import std.c.windows.windows;
 
 extern(Windows) nothrow
@@ -25,6 +27,8 @@ extern(Windows) nothrow
     int ToUnicodeEx(UINT wVirtKey, UINT wScanCode, const BYTE *lpKeyState, LPWSTR pwszBuff, int cchBuff, UINT wFlags, HKL dwhkl);
 
     SHORT VkKeyScanW(WCHAR ch);
+
+    SHORT VkKeyScanExW(WCHAR ch, const HKL dwhkl);
 
     void OutputDebugStringW(LPCWSTR lpOutputString);
 

@@ -1,11 +1,12 @@
+module Hook;
+
 import std.c.windows.windows;
 import std.utf;
 import WinApi;
 import KeyTranslator;
 import Util;
 
-extern (Windows)
-nothrow LRESULT getMsgProc(int code, WPARAM wParam, LPARAM lParam)
+extern (Windows) nothrow LRESULT getMsgProc(int code, WPARAM wParam, LPARAM lParam)
 {
     if (HC_ACTION == code && PM_REMOVE == wParam)
     {
@@ -16,8 +17,7 @@ nothrow LRESULT getMsgProc(int code, WPARAM wParam, LPARAM lParam)
     return CallNextHookEx(null, code, wParam, lParam);
 }
 
-extern (Windows)
-nothrow LRESULT callWndProc(int code, WPARAM wParam, LPARAM lParam)
+extern (Windows) nothrow LRESULT callWndProc(int code, WPARAM wParam, LPARAM lParam)
 {
     if (HC_ACTION == code)
     {
@@ -59,7 +59,7 @@ void internalGetMsgProc(WPARAM wParam, LPARAM lParam)
             switch (msg.wParam)
             {
                 case VK_PAUSE:
-                    if (isKeyPressed(VK_SHIFT))
+                    if (isKeyPressed(VK_SHIFT) && !isKeyPressed(VK_MENU) && !isKeyPressed(VK_CONTROL))
                     {
                         KeyTranslator.translateSelectedKeys();
                     }

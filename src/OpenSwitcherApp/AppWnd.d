@@ -1,10 +1,12 @@
+module AppWnd;
+
+import std.c.windows.windows;
+import TrayIcon;
+import Resource;
+import WinApi;
+
 private
 {    
-    import std.c.windows.windows;
-    import TrayIcon;
-    import Resource;
-    import WinApi;
-
     immutable uint kTrayMessage = WM_USER + 10;
     immutable uint kTrayId = 1;
     immutable uint IDABOUT = 100;
@@ -24,7 +26,7 @@ private
 
     extern(Windows) nothrow LRESULT myWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) 
     {
-        switch(msg)
+        switch (msg)
         {
             case WM_COMMAND:
                 switch (wparam)

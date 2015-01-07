@@ -1,3 +1,5 @@
+module Key;
+
 import std.c.windows.windows;
 import WinApi;
 import Input;
@@ -9,6 +11,29 @@ public:
     nothrow this(wchar wch)
     {
         auto res = VkKeyScanW(wch);
+
+        m_vk = cast(byte)res;
+        m_shift = cast(bool)(res & 0x100);
+    }
+
+    nothrow this(wchar wch, const HKL[] layouts)
+    {
+        short res;
+
+        foreach (const HKL layout; layouts)
+        {
+            res = VkKeyScanExW(wch, layout);
+
+            if (-1 != res)
+            {
+                break;
+            }
+        }
+
+        if (-1 == res)
+        {
+            res = 0;
+        }
 
         m_vk = cast(byte)res;
         m_shift = cast(bool)(res & 0x100);
@@ -51,7 +76,7 @@ public:
 
 private:
     immutable static ubyte[256] m_kNormalState;
-    immutable static ubyte[256] m_kShiftState = [ VK_SHIFT: 0xF0 ];
+    immutable static ubyte[256] m_kShiftState = [ VK_SHIFT: 0x80 ];
     byte m_vk;
     bool m_shift;
 }

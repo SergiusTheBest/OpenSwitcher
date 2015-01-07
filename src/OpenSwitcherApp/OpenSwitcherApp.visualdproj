@@ -407,7 +407,7 @@
  <Folder name="OpenSwitcherApp">
   <File path="AppWnd.d" />
   <File path="Main.d" />
-  <File path="Resource.d" />
+  <File path="Resource.di" />
   <File path="Resource.h" />
   <File tool="Resource Compiler" path="Resource.rc" addopt="/nologo" />
   <File path="TrayIcon.d" />

@@ -1,3 +1,5 @@
+module Main;
+
 import std.stdio;
 import std.c.windows.windows;
 import WinApi;

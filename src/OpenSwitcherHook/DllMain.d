@@ -1,8 +1,9 @@
+module DllMain;
+
 import std.c.windows.windows;
 import core.sys.windows.dll;
 
-extern (Windows)
-BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
+extern (Windows) BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
 {
     final switch (ulReason)
     {
