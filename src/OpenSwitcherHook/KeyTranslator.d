@@ -16,7 +16,7 @@ private
         CopyInProgress,
     }
 
-    Array!Key g_storedKeys;
+    Array!Key g_typedKeys;
     State g_state;
 
     void translateSelectedKeys2()
@@ -107,12 +107,12 @@ private
 
 public
 {
-    void addToStoredKeys(LPMSG msg)
+    void addToTypedKeys(LPMSG msg)
     {
         if (State.Translated == g_state)
         {
             g_state = State.Initial;
-            g_storedKeys.clear();
+            g_typedKeys.clear();
         }
 
         if (isKeyPressed(VK_CONTROL) || isKeyPressed(VK_MENU))
@@ -120,26 +120,26 @@ public
             return;
         }
 
-        g_storedKeys.insertBack(Key.Key(msg));
+        g_typedKeys.insertBack(Key.Key(msg));
     }
 
-    void clearStoredKeys()
+    void clearTypedKeys()
     {
-        g_storedKeys.clear();
+        g_typedKeys.clear();
     }
 
-    void translateStoredKeys()
+    void translateTypedKeys()
     {
-        if (g_storedKeys.empty())
+        if (g_typedKeys.empty())
         {
             return;
         }
 
         {
             INPUT[] input;
-            input.reserve(g_storedKeys.length * 2);
+            input.reserve(g_typedKeys.length * 2);
 
-            foreach (Key key; g_storedKeys)
+            foreach (Key key; g_typedKeys)
             {
                 input[input.length++] = kBackKeyDown;
                 input[input.length++] = kBackKeyUp;
@@ -150,9 +150,9 @@ public
 
         {
             INPUT[] input;
-            input.reserve(g_storedKeys.length * 4);
+            input.reserve(g_typedKeys.length * 4);
 
-            foreach (Key key; g_storedKeys)
+            foreach (Key key; g_typedKeys)
             {
                 input ~= key.toInput();
             }
@@ -160,7 +160,7 @@ public
             ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
             SendInput(input.length, input.ptr, INPUT.sizeof);
 
-            g_storedKeys.clear();
+            g_typedKeys.clear();
         }
 
         SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);

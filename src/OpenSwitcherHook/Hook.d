@@ -65,14 +65,14 @@ void internalGetMsgProc(WPARAM wParam, LPARAM lParam)
                     }
                     else
                     {
-                        KeyTranslator.translateStoredKeys();
+                        KeyTranslator.translateTypedKeys();
                     }
                     break;
 
                 case VK_BACK, VK_TAB, VK_CLEAR, VK_RETURN, VK_MENU, VK_ESCAPE, VK_PRIOR, VK_NEXT, VK_END, VK_HOME, VK_LEFT, VK_UP, VK_RIGHT, VK_DOWN, VK_SELECT, VK_PRINT, VK_EXECUTE, VK_SNAPSHOT, 
                     VK_INSERT, VK_DELETE, VK_HELP, VK_LWIN, VK_RWIN, VK_APPS, VK_F1, VK_F2, VK_F3, VK_F4, VK_F5, VK_F6, VK_F7, VK_F8, VK_F9, VK_F10, VK_F11, VK_F12,
                     VK_LCONTROL, VK_RCONTROL, VK_LMENU, VK_RMENU:
-                    KeyTranslator.clearStoredKeys();
+                    KeyTranslator.clearTypedKeys();
                     break;
 
                 case VK_CONTROL:
@@ -83,7 +83,7 @@ void internalGetMsgProc(WPARAM wParam, LPARAM lParam)
                     break;
 
                 default:
-                    KeyTranslator.addToStoredKeys(msg);
+                    KeyTranslator.addToTypedKeys(msg);
                     break;
             }
             break;
@@ -100,7 +100,7 @@ void internalCallWndProc(WPARAM wParam, LPARAM lParam)
     switch (cwpStruct.message)
     {
         case WM_SETFOCUS:
-            KeyTranslator.clearStoredKeys();
+            KeyTranslator.clearTypedKeys();
             break;
 
         default:
