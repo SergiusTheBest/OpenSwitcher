@@ -75,7 +75,7 @@ private
             g_selectedKeys[g_selectedKeys.length++] = Key.Key(str[i], layouts);
         }    
 
-        ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
+        ActivateKeyboardLayout(HKL_NEXT, 0);
 
         wchar[] newStr;
         newStr.reserve(len + 1);
@@ -169,7 +169,7 @@ public
                 input ~= key.toInput();
             }
 
-            ActivateKeyboardLayout(HKL_NEXT, KLF_SETFORPROCESS);
+            ActivateKeyboardLayout(HKL_NEXT, 0);
             SendInput(input.length, input.ptr, INPUT.sizeof);
 
             g_typedKeys.length = 0;
