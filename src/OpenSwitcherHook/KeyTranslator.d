@@ -42,10 +42,7 @@ private
             return;
         }
 
-        scope(exit)
-        {
-            CloseClipboard();
-        }
+        scope(exit) CloseClipboard();
 
         auto data = GetClipboardData(CF_UNICODETEXT);
         if (!data)
@@ -59,10 +56,7 @@ private
             return;
         }
 
-        scope(exit)
-        {
-            GlobalUnlock(data);
-        }
+        scope(exit) GlobalUnlock(data);
 
         auto len = wcslen(str);
 
@@ -102,10 +96,7 @@ private
             return;
         }
 
-        scope(exit)
-        {
-            GlobalUnlock(newDataPtr);
-        }
+        scope(exit) GlobalUnlock(newDataPtr);
 
         wcscpy(newDataPtr, newStr.ptr);
 
