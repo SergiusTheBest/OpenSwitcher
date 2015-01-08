@@ -22,6 +22,7 @@ private
     Key[] g_typedKeys;
     Key[] g_selectedKeys;
     State g_state;
+    bool g_space;
 
     void translateSelectedKeys2()
     {
@@ -124,12 +125,24 @@ public
         if (State.Translated == g_state)
         {
             g_state = State.Initial;
-            g_typedKeys.length = 0;
+            clearTypedKeys();
         }
 
         if (isKeyPressed(VK_CONTROL) || isKeyPressed(VK_MENU))
         {
             return;
+        }
+
+        if (State.TranslationInProgress != g_state)
+        {
+            if (VK_SPACE == cast(byte)msg.wParam)
+            {
+                g_space = true;
+            }
+            else if (g_space)
+            {
+                clearTypedKeys();
+            }
         }
 
         g_typedKeys[g_typedKeys.length++] = Key.Key(msg);
@@ -138,6 +151,7 @@ public
     void clearTypedKeys()
     {
         g_typedKeys.length = 0;
+        g_space = false;
     }
 
     void translateTypedKeys()
