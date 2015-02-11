@@ -89,7 +89,7 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles />
+  <libfiles>$(OutDir)\OpenSwitcherHook.lib</libfiles>
   <libpaths />
   <deffile />
   <resfile />
@@ -190,7 +190,7 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles />
+  <libfiles>$(OutDir)\OpenSwitcherHook.lib</libfiles>
   <libpaths />
   <deffile />
   <resfile />

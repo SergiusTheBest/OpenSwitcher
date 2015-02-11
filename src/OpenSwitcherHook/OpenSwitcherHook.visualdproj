@@ -75,7 +75,7 @@
   <versionids />
   <dump_source>0</dump_source>
   <mapverbosity>0</mapverbosity>
-  <createImplib>0</createImplib>
+  <createImplib>1</createImplib>
   <defaultlibname />
   <debuglibname />
   <moduleDepsFile />
@@ -176,7 +176,7 @@
   <versionids />
   <dump_source>0</dump_source>
   <mapverbosity>0</mapverbosity>
-  <createImplib>0</createImplib>
+  <createImplib>1</createImplib>
   <defaultlibname />
   <debuglibname />
   <moduleDepsFile />
@@ -207,6 +207,7 @@
   <File path="DllMain.d" />
   <File path="Hook.d" />
   <File path="Input.d" />
+  <File path="Install.d" />
   <File path="Key.d" />
   <File path="KeyboardState.d" />
   <File path="KeyTranslator.d" />

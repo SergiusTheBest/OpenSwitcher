@@ -3,11 +3,14 @@ module DllMain;
 import std.c.windows.windows;
 import core.sys.windows.dll;
 
+__gshared HINSTANCE g_instance;
+
 extern (Windows) BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
 {
     final switch (ulReason)
     {
     case DLL_PROCESS_ATTACH:
+        g_instance = hInstance;
         dll_process_attach(hInstance, true);
         break;
 

@@ -15,5 +15,5 @@ DATA         PRELOAD MULTIPLE
 ;    Symbol Symbol
 
 EXPORTS
-    getMsgProc getMsgProc
-    callWndProc callWndProc
+    installHook installHook
+    uninstallHook uninstallHook
