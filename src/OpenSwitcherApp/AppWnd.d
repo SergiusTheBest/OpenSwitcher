@@ -14,16 +14,6 @@ private
     HMODULE g_appInstance;
     TrayIcon g_trayIcon;
 
-    void runMessageLoop()
-    {
-        MSG msg;
-        while (GetMessageW(&msg, null, 0, 0) > 0)
-        {
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
-        }
-    }
-
     extern(Windows) nothrow LRESULT myWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) 
     {
         switch (msg)
@@ -128,5 +118,34 @@ public
         g_trayIcon.show();
 
         runMessageLoop();
+    }
+
+    void runMessageLoop()
+    {
+        MSG msg;
+        while (GetMessageW(&msg, null, 0, 0) > 0)
+        {
+            TranslateMessage(&msg);
+            DispatchMessageW(&msg);
+        }
+    }
+
+    void runMessageLoop(HANDLE exitEvent)
+    {
+        MSG msg;
+
+        while (WAIT_OBJECT_0 != MsgWaitForMultipleObjects(1, &exitEvent, false, INFINITE, QS_ALLEVENTS))
+        {
+            while (PeekMessageW(&msg, null, 0, 0, PM_REMOVE))
+            {
+                if (WM_QUIT == msg.message)
+                {
+                    return;
+                }
+
+                TranslateMessage(&msg);
+                DispatchMessageW(&msg);
+            }
+        }
     }
 }

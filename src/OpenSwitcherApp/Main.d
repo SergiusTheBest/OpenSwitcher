@@ -1,8 +1,12 @@
 module Main;
 
-import std.stdio;
 import std.c.windows.windows;
-import AppWnd;
+import std.getopt;
+import std.process;
+import std.conv;
+import std.exception;
+import WinApi;
+static import AppWnd;
 
 extern(Windows) nothrow
 {
@@ -10,13 +14,35 @@ extern(Windows) nothrow
     void uninstallHook();
 }
 
-int main(string[] argv)
+void mymain(string[] argv)
 {   
+    HANDLE parent;
+
+    version(Win32)
+    {
+        uint ppid;
+        getopt(argv, "ppid", &ppid);
+
+        if (ppid)
+        {
+            parent = OpenProcess(SYNCHRONIZE, false, ppid);
+        }
+    }
+    else
+    {
+        collectException(spawnProcess(["OpenSwitcherApp32.exe", "--ppid=" ~ to!string(thisProcessID())]));
+    }
+
     installHook();
 
-    AppWnd.run();
+    if (parent)
+    {
+        AppWnd.runMessageLoop(parent);
+    }
+    else
+    {
+        AppWnd.run();
+    }
 
     uninstallHook();
-
-    return 0;
 }

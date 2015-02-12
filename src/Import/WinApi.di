@@ -67,7 +67,13 @@ extern(Windows) nothrow
     HANDLE LoadImageW(HINSTANCE hinst, LPCWSTR lpszName, UINT uType, int cxDesired, int cyDesired, UINT fuLoad);
 
     int MessageBoxIndirectW(const LPMSGBOXPARAMS lpMsgBoxParams);
+
+    HANDLE OpenProcess(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
+
+    DWORD MsgWaitForMultipleObjects(DWORD nCount, const HANDLE *pHandles, BOOL bWaitAll, DWORD dwMilliseconds, DWORD dwWakeMask);
 }
+
+enum QS_ALLEVENTS = 0x04BF;
 
 struct MSGBOXPARAMS
 {

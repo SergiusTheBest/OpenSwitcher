@@ -4,7 +4,7 @@
 ;  http://d.puremagic.com/issues/show_bug.cgi?id=8130
 
 EXETYPE      NT
-LIBRARY      "OpenSwitcherHook.dll"
+LIBRARY      "OpenSwitcherHook32.dll"
 CODE         PRELOAD DISCARDABLE
 DATA         PRELOAD MULTIPLE
 

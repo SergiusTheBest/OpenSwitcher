@@ -58,7 +58,7 @@ private
 
         scope(exit) GlobalUnlock(data);
 
-        auto len = wcslen(str);
+        auto len = cast(int)wcslen(str);
 
         g_selectedKeys.length = 0;
         g_selectedKeys.reserve(len);
@@ -162,7 +162,7 @@ public
                 input[input.length++] = kBackKeyUp;
             }
 
-            SendInput(input.length, input.ptr, INPUT.sizeof);
+            SendInput(cast(int)input.length, input.ptr, cast(int)INPUT.sizeof);
         }
 
         {
@@ -175,7 +175,7 @@ public
             }
 
             ActivateKeyboardLayout(HKL_NEXT, 0);
-            SendInput(input.length, input.ptr, INPUT.sizeof);
+            SendInput(cast(int)input.length, input.ptr, cast(int)INPUT.sizeof);
 
             g_typedKeys.length = 0;
         }
