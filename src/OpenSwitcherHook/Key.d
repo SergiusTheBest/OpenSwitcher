@@ -60,15 +60,15 @@ public:
 
         if (m_shift)
         {
-            input[input.length++] = kShiftKeyDown;
+            input ~= kShiftKeyDown;
         }
 
-        input[input.length++] = makeINPUT(m_vk);
-        input[input.length++] = makeINPUT(m_vk, true);
+        input ~= makeINPUT(m_vk);
+        input ~= makeINPUT(m_vk, true);
 
         if (m_shift)
         {
-            input[input.length++] = kShiftKeyUp;
+            input ~= kShiftKeyUp;
         }
 
         return input;

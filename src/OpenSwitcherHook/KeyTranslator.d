@@ -67,7 +67,7 @@ private
 
         foreach (int i; 0..len)
         {
-            g_selectedKeys[g_selectedKeys.length++] = Key.Key(str[i], layouts);
+            g_selectedKeys ~= Key.Key(str[i], layouts);
         }    
 
         ActivateKeyboardLayout(HKL_NEXT, 0);
@@ -77,10 +77,10 @@ private
 
         foreach (Key key; g_selectedKeys)
         {
-            newStr[newStr.length++] = key.toUnicode();
+            newStr ~= key.toUnicode();
         }
 
-        newStr[newStr.length++] = 0;
+        newStr ~= 0;
 
         EmptyClipboard();
 
@@ -136,7 +136,7 @@ public
             }
         }
 
-        g_typedKeys[g_typedKeys.length++] = Key.Key(msg);
+        g_typedKeys ~= Key.Key(msg);
     }
 
     void clearTypedKeys()
@@ -158,8 +158,8 @@ public
 
             foreach (Key key; g_typedKeys)
             {
-                input[input.length++] = kBackKeyDown;
-                input[input.length++] = kBackKeyUp;
+                input ~= kBackKeyDown;
+                input ~= kBackKeyUp;
             }
 
             SendInput(cast(int)input.length, input.ptr, cast(int)INPUT.sizeof);
