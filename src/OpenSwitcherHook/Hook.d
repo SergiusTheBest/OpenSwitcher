@@ -3,7 +3,7 @@ module Hook;
 import std.c.windows.windows;
 import std.utf;
 import WinApi;
-import KeyTranslator;
+static import KeyTranslator;
 import Util;
 
 extern (Windows) nothrow LRESULT getMsgProc(int code, WPARAM wParam, LPARAM lParam)
@@ -86,6 +86,10 @@ void internalGetMsgProc(WPARAM wParam, LPARAM lParam)
                     KeyTranslator.addToTypedKeys(msg);
                     break;
             }
+            break;
+
+        case WM_LBUTTONDOWN, WM_RBUTTONDOWN:
+            KeyTranslator.clearTypedKeys();
             break;
 
         default:
