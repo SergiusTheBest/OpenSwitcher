@@ -23,5 +23,5 @@ nothrow HKL[] getKeyboardLayouts()
     HKL[100] layouts;
     auto returned = GetKeyboardLayoutList(layouts.length, layouts.ptr);
     
-    return layouts[0..returned];
+    return layouts[0..returned].dup;
 }
