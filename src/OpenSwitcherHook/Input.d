@@ -1,7 +1,6 @@
 module Input;
 
-import std.c.windows.windows;
-import WinApi;
+import core.sys.windows.windows;
 
 immutable INPUT kBackKeyDown;
 immutable INPUT kBackKeyUp;

@@ -1,9 +1,8 @@
 module AppWnd;
 
-import std.c.windows.windows;
+import core.sys.windows.windows;
 import TrayIcon;
 import Resource;
-import WinApi;
 
 private
 {    
@@ -50,7 +49,7 @@ private
             case kTrayMessage:
                 switch (wparam)
                 {
-				case kTrayId:
+                case kTrayId:
                     switch(lparam)
                     {
                     case WM_RBUTTONUP:
@@ -62,7 +61,7 @@ private
                         }
 
                         AppendMenuW(menu, 0, IDABOUT, "&About");
-                        AppendMenuW(menu, 0, IDCLOSE, "E&xit");                        
+                        AppendMenuW(menu, 0, IDCLOSE, "E&xit");
 
                         POINT pt;
                         GetCursorPos(&pt);
@@ -77,7 +76,7 @@ private
                     }
                     break;
 
-				default:
+                default:
                     break;
                 }
                 break;
@@ -88,7 +87,7 @@ private
                 break;
 
             default:
-    		    return DefWindowProcW(hwnd, msg, wparam, lparam);
+                return DefWindowProcW(hwnd, msg, wparam, lparam);
         }
 
         return 0;

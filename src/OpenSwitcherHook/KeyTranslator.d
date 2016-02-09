@@ -1,8 +1,7 @@
 module KeyTranslator;
 
-import std.c.windows.windows;
+import core.sys.windows.windows;
 import core.stdc.wchar_;
-import WinApi;
 import Key;
 import Input;
 import Util;
@@ -28,7 +27,7 @@ private
     {
         scope(exit)
         {
-            SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
+            SendInput(kMarkerKeys.length, cast(INPUT*)kMarkerKeys.ptr, INPUT.sizeof);
             g_state = State.PasteInProgress;
         }
 
@@ -70,7 +69,7 @@ private
             g_selectedKeys ~= Key.Key(str[i], layouts);
         }    
 
-        ActivateKeyboardLayout(HKL_NEXT, 0);
+        ActivateKeyboardLayout(cast(HKL)HKL_NEXT, 0);
 
         wchar[] newStr;
         newStr.reserve(len + 1);
@@ -105,7 +104,7 @@ private
             GlobalFree(newData);
         }
 
-        SendInput(kPasteKeys.length, kPasteKeys.ptr, INPUT.sizeof);
+        SendInput(kPasteKeys.length, cast(INPUT*)kPasteKeys.ptr, INPUT.sizeof);
     }
 }
 
@@ -174,13 +173,13 @@ public
                 input ~= key.toInput();
             }
 
-            ActivateKeyboardLayout(HKL_NEXT, 0);
+            ActivateKeyboardLayout(cast(HKL)HKL_NEXT, 0);
             SendInput(cast(int)input.length, input.ptr, cast(int)INPUT.sizeof);
 
             g_typedKeys.length = 0;
         }
 
-        SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
+        SendInput(kMarkerKeys.length, cast(INPUT*)kMarkerKeys.ptr, INPUT.sizeof);
         g_state = State.TranslationInProgress;
     }
 
@@ -188,8 +187,8 @@ public
     {
         KeyboardState.clear();
 
-        SendInput(kCopyKeys.length, kCopyKeys.ptr, INPUT.sizeof);
-        SendInput(kMarkerKeys.length, kMarkerKeys.ptr, INPUT.sizeof);
+        SendInput(kCopyKeys.length, cast(INPUT*)kCopyKeys.ptr, INPUT.sizeof);
+        SendInput(kMarkerKeys.length, cast(INPUT*)kMarkerKeys.ptr, INPUT.sizeof);
         g_state = State.CopyInProgress;
     }
 

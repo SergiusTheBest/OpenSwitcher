@@ -1,8 +1,7 @@
 module Hook;
 
-import std.c.windows.windows;
+import core.sys.windows.windows;
 import std.utf;
-import WinApi;
 static import KeyTranslator;
 import Util;
 
@@ -99,7 +98,7 @@ void internalGetMsgProc(WPARAM wParam, LPARAM lParam)
 
 void internalCallWndProc(WPARAM wParam, LPARAM lParam)
 {
-    auto cwpStruct = cast(LPCWPSTRUCT)lParam;
+    auto cwpStruct = cast(PCWPSTRUCT)lParam;
 
     switch (cwpStruct.message)
     {

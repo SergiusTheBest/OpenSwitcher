@@ -1,7 +1,6 @@
 module Util;
 
-import std.c.windows.windows;
-import WinApi;
+import core.sys.windows.windows;
 
 nothrow bool isMarkerKey(LPMSG msg)
 {

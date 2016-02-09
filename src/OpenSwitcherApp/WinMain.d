@@ -1,11 +1,11 @@
 module WinMain;
 
-import std.c.windows.windows;
+import core.sys.windows.windows;
 import std.string;
 import std.utf;
+import core.stdc.wchar_;
 import core.stdc.string;
 import core.runtime;
-import WinApi;
 import Main;
 
 string[] getArguments()
@@ -41,7 +41,7 @@ extern(Windows) int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPCSTR
 
         Runtime.terminate();
     }
-    catch (Throwable o)		// catch any uncaught exceptions
+    catch (Throwable o)     // catch any uncaught exceptions
     {
         MessageBoxA(null, toStringz(o.toString()), "Error", MB_ICONEXCLAMATION);
     }

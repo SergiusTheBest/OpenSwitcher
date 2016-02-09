@@ -1,7 +1,6 @@
 module KeyboardState;
 
-import std.c.windows.windows;
-import WinApi;
+import core.sys.windows.windows;
 import Util;
 
 void clear()

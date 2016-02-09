@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherApp", "OpenSwitcherApp\OpenSwitcherApp.visualdproj", "{A322B3BF-41AD-48BD-AA1E-A224D4A4C935}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,11 +9,6 @@ Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherApp", "OpenSwit
 	EndProjectSection
 EndProject
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "OpenSwitcherHook", "OpenSwitcherHook\OpenSwitcherHook.visualdproj", "{45B26AB5-7BFD-4DB3-BC95-595A18347CC2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Import", "Import", "{4436197D-89E8-4903-A420-736E74620356}"
-	ProjectSection(SolutionItems) = preProject
-		Import\WinApi.di = Import\WinApi.di
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

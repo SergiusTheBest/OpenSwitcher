@@ -1,7 +1,6 @@
 module Key;
 
-import std.c.windows.windows;
-import WinApi;
+import core.sys.windows.windows;
 import Input;
 import Util;
 
@@ -22,7 +21,7 @@ public:
 
         foreach (const HKL layout; layouts)
         {
-            res = VkKeyScanExW(wch, layout);
+            res = VkKeyScanExW(wch, cast(void*)layout);
 
             if (-1 != res)
             {
@@ -48,7 +47,7 @@ public:
     nothrow wchar toUnicode()
     {
         wchar wch;
-        ToUnicode(m_vk, 0, m_shift ? m_kShiftState.ptr : m_kNormalState.ptr, &wch, 1, 0);
+        ToUnicode(m_vk, 0, cast(ubyte*)(m_shift ? m_kShiftState.ptr : m_kNormalState.ptr), &wch, 1, 0);
 
         return wch;
     }

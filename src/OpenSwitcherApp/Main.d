@@ -1,11 +1,10 @@
 module Main;
 
-import std.c.windows.windows;
+import core.sys.windows.windows;
 import std.getopt;
 import std.process;
 import std.conv;
 import std.exception;
-import WinApi;
 static import AppWnd;
 
 extern(Windows) nothrow
